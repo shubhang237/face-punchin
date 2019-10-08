@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_teacher_today_schedule"
+            android:icon="@drawable/ic_library_books_white_24dp"
+            android:title="@string/classes_today" />
+
+        <item
+            android:id="@+id/nav_teacher_timetable"
+            android:icon="@drawable/ic_event_note_white_24dp"
+            android:title="@string/menu_timetable" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/menu_share" />
+        </menu>
+    </item>
+
+</menu>
