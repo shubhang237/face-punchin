@@ -28,10 +28,12 @@ public class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.
 
     Context context;
     List<Student> data;
+    List<String> present;
 
-    public SectionListAdapter(Context context, List<Student> data,@NonNull OnItemCheckListener onItemCheckListener) {
+    public SectionListAdapter(Context context, List<Student> data,List<String> present,@NonNull OnItemCheckListener onItemCheckListener) {
         this.context = context;
         this.data = data;
+        this.present = present;
         this.onItemClick = onItemCheckListener;
     }
 
@@ -52,13 +54,18 @@ public class SectionListAdapter extends RecyclerView.Adapter<SectionListAdapter.
                    public void onClick(View view) {
                        holder.checkBox.setChecked(!holder.checkBox.isChecked());
                        if(holder.checkBox.isChecked()){
-                            onItemClick.onItemCheck(currentItem);
+                           onItemClick.onItemCheck(currentItem);
                        }
                        else {
                            onItemClick.onItemUncheck(currentItem);
                        }
                    }
                });
+               for(int i=0;i<present.size();i++){
+                   if(data.get(position).getRollno().equals(present.get(i))){
+                       holder.checkBox.setChecked(true);
+                   }
+               }
                holder.rollNo.setText(data.get(position).getRollno());
                holder.studentName.setText(data.get(position).getStudentData().getFirstName()+" "+data.get(position).getStudentData().getLastName());
            }

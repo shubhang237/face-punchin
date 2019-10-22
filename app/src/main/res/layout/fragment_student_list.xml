@@ -34,13 +34,24 @@
         android:layout_weight="1"
         android:text="MARK"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
+        android:layout_height="match_parent"/>
+
+    <ImageButton
+        android:background="@color/white"
+        android:src="@drawable/ic_folder_open_black_24dp"
+        android:id="@+id/galleryAttendance"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageButton
+        android:background="@color/white"
+        android:src="@drawable/ic_photo_camera_blue_24dp"
         android:id="@+id/photoAttendance"
         android:layout_weight="1"
-        android:text="CAPTURE PHOTO"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
+
     </LinearLayout>
 
 </LinearLayout>
