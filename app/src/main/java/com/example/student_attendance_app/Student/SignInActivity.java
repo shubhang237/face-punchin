@@ -39,9 +39,11 @@ public class SignInActivity extends AppCompatActivity {
 
     EditText emailId;
     EditText password;
+    EditText baseUrl;
     CheckBox showPassword;
     Button login;
     ProgressDialog progressDoalog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class SignInActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         showPassword = findViewById(R.id.showPassword);
         login = findViewById(R.id.login);
+        baseUrl = findViewById(R.id.baseUrl);
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -70,8 +73,8 @@ public class SignInActivity extends AppCompatActivity {
                 progressDoalog = new ProgressDialog(SignInActivity.this);
                 progressDoalog.setMessage("Signing In....");
                 progressDoalog.show();
-
-                GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+                final String base = baseUrl.getText().toString();
+                GetDataService service = RetrofitClientInstance.getRetrofitInstance(base).create(GetDataService.class);
                 Call<TokenData> call = service.getToken(new credential(emailId.getText().toString(),password.getText().toString()));
                 Log.d("TAG",call.request().url().toString());
                 call.enqueue(new Callback<TokenData>() {
@@ -86,6 +89,7 @@ public class SignInActivity extends AppCompatActivity {
                             editor.putString("username",tokenData.getUserData().getInfodata().getFirstName()+" "+tokenData.getUserData().getInfodata().getLastName());
                             editor.putString("email",tokenData.getUserData().getInfodata().getEmail());
                             editor.putString("role",tokenData.getType());
+                            editor.putString("base_url",base);
                             editor.putBoolean("signedin",true);
                             editor.commit();
                             if(!tokenData.getType().equals("admin")){
@@ -101,8 +105,10 @@ public class SignInActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<TokenData> call, Throwable t) {
+
                         progressDoalog.dismiss();
-                        Toast.makeText(getBaseContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getBaseContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

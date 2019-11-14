@@ -83,7 +83,8 @@ public class StudentListFragment extends Fragment {
         SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
         String token = sPref.getString("access_token","");
         String email = sPref.getString("email","");
-        getData("Token "+token,email);
+        String base_url = sPref.getString("base_url","");
+        getData("Token "+token,email,base_url);
         return inflater.inflate(R.layout.fragment_student_list, container, false);
     }
 
@@ -96,21 +97,32 @@ public class StudentListFragment extends Fragment {
             public void onClick(View view) {
                 SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
                 String token = sPref.getString("access_token","");
-                postAttendance("Token "+token,new PostAttendance(date,currentSelectedItems,slot,isLab));
+                String base_url = sPref.getString("base_url","");
+                postAttendance("Token "+token,new PostAttendance(date,currentSelectedItems,slot,isLab),base_url);
             }
         });
         photoAttendance = view.findViewById(R.id.photoAttendance);
         photoAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                captureFromCamera();
+                try {
+                    captureFromCamera();
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Something went wrong with camera!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         galleryAttendance = view.findViewById(R.id.galleryAttendance);
         galleryAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickFromGallery();
+                try {
+                    pickFromGallery();
+                }
+                catch (Exception e){
+                    Toast.makeText(getContext(), "Something went wrong with gallery!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -151,7 +163,12 @@ public class StudentListFragment extends Fragment {
     public void onActivityResult(int requestCode,int resultCode,Intent data){
         if (resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
-            markAttendanceWithPhoto(selectedImage);
+            try {
+                markAttendanceWithPhoto(selectedImage);
+            }
+            catch (Exception e){
+                Toast.makeText(getContext(), "Something went wrong !", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -169,15 +186,16 @@ public class StudentListFragment extends Fragment {
         RequestBody slot = RequestBody.create(MediaType.parse("multipart/form-data"), this.slot);
         SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
         String token = sPref.getString("access_token","");
-        getPresentStudentList("Token "+token,slot,image);
+        String base_url = sPref.getString("base_url","");
+        getPresentStudentList("Token "+token,slot,image,base_url);
     }
 
 
-    public void getPresentStudentList(String token, RequestBody slot, MultipartBody.Part image){
+    public void getPresentStudentList(String token, RequestBody slot, MultipartBody.Part image,String base_url){
         progressDoalog = new ProgressDialog(getContext());
         progressDoalog.setMessage("Fetching Present Students ....");
         progressDoalog.show();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance(base_url).create(GetDataService.class);
         Call<AttendanceList> call = service.getPresentList(token,slot,image);
         call.enqueue(new Callback<AttendanceList>() {
             @Override
@@ -210,11 +228,11 @@ public class StudentListFragment extends Fragment {
 
     }
 
-    public void getData(String token, String email){
+    public void getData(String token, String email,String base_url){
         progressDoalog = new ProgressDialog(getContext());
         progressDoalog.setMessage("Fetching Student List ....");
         progressDoalog.show();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance(base_url).create(GetDataService.class);
         Call<SectionList> call = service.getStudentList(token,email,slot);
         call.enqueue(new Callback<SectionList>() {
             @Override
@@ -236,11 +254,11 @@ public class StudentListFragment extends Fragment {
         });
     }
 
-    public void postAttendance(String token, PostAttendance postAttendance){
+    public void postAttendance(String token, PostAttendance postAttendance,String base_url){
         progressDoalog = new ProgressDialog(getContext());
         progressDoalog.setMessage("Marking Attendance ....");
         progressDoalog.show();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance(base_url).create(GetDataService.class);
         Call<Status> call = service.markAttendances(token,"application/json",postAttendance);
         call.enqueue(new Callback<Status>() {
             @Override

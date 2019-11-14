@@ -38,15 +38,16 @@ public class TimetableFragment extends Fragment {
         SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
         String token = sPref.getString("access_token",null);
         String email = sPref.getString("email",null);
-        getData(email,"Token "+token);
+        String base_url = sPref.getString("base_url","");
+        getData(email,"Token "+token,base_url);
         return inflater.inflate(R.layout.fragment_timetable, container, false);
     }
 
-    public void getData(String email,String token){
+    public void getData(String email,String token,String base_url){
         progressDoalog = new ProgressDialog(getContext());
         progressDoalog.setMessage("Fetching Timetable....");
         progressDoalog.show();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance(base_url).create(GetDataService.class);
         Call<Timetable> call = service.getTimetable(token,email);
         call.enqueue(new Callback<Timetable>() {
             @Override

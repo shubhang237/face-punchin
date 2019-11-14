@@ -37,15 +37,16 @@ public class SubjectAttendanceFragment extends Fragment {
         SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
         String token = sPref.getString("access_token",null);
         String email = sPref.getString("email",null);
-        getData("Token "+token,email);
+        String base_url = sPref.getString("base_url","");
+        getData("Token "+token,email,base_url);
         return inflater.inflate(R.layout.fragment_subject_attendance, container, false);
     }
 
-    public void getData(String token,String email){
+    public void getData(String token,String email,String base_url){
         progressDoalog = new ProgressDialog(getContext());
         progressDoalog.setMessage("Fetching Attendance....");
         progressDoalog.show();
-        GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+        GetDataService service = RetrofitClientInstance.getRetrofitInstance(base_url).create(GetDataService.class);
         Call<SubjectAttendance> call = service.getAllAttendance(token,email);
         call.enqueue(new Callback<SubjectAttendance>() {
 

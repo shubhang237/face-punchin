@@ -47,6 +47,6 @@ public interface GetDataService {
     Call<Status> markAttendances(@Header("Authorization") String token, @Header("Content-Type") String type, @Body PostAttendance postAttendance);
 
     @Multipart
-    @POST("api/attendance/find_faces/")
+    @POST("api/attendance/find_faces_2/")
     Call<AttendanceList> getPresentList(@Header("Authorization") String token, @Part("slot") RequestBody slot, @Part MultipartBody.Part image);
 }
