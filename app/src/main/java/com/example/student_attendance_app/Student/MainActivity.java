@@ -1,5 +1,7 @@
 package com.example.student_attendance_app.Student;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +10,8 @@ import com.example.student_attendance_app.Student.Fragments.TeacherTimetableFrag
 import com.example.student_attendance_app.Student.Fragments.TeacherTodayFragment;
 import com.example.student_attendance_app.Student.Fragments.TimetableFragment;
 import com.example.student_attendance_app.R;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -21,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,7 +48,6 @@ public class MainActivity extends AppCompatActivity
         String email = sPref.getString("email","");
         String role = sPref.getString("role","none");
         showUserInfo(username, email);
-
         if(role.equals("student")) {
             loadFragment(new TimetableFragment());
         }
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -75,13 +78,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if(id == R.id.sign_out){
+        if(id == R.id.sign_out){
             SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("MyPref",0).edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent(MainActivity.this,SignInActivity.class);
             startActivity(intent);
             return true;

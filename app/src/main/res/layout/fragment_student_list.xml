@@ -5,12 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <DatePicker-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:layout_weight="1"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"/>-->
-
     <TextView
         android:textSize="20sp"
         android:textAlignment="center"
@@ -51,6 +45,16 @@
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+        <ToggleButton
+            android:textColor="@color/colorPrimary"
+            android:text="PRO"
+            android:background="@color/white"
+            android:id="@+id/mode"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+            />
 
     </LinearLayout>
 

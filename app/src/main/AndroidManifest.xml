@@ -31,19 +31,30 @@
             android:name="com.google.android.actions"
             android:resource="@xml/file_paths" />
 
-        <activity android:name=".Student.SignInActivity" />
+        <activity
+            android:name=".Student.SignInActivity"
+            android:screenOrientation="portrait"
+
+            />
         <activity
             android:name=".Student.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Student.SplashScreen">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".Student.SplashScreen"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Student.WelcomeActivity" />
+        <activity
+            android:name=".Student.WelcomeActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

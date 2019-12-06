@@ -44,7 +44,6 @@ public class SignInActivity extends AppCompatActivity {
     Button login;
     ProgressDialog progressDoalog;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +89,7 @@ public class SignInActivity extends AppCompatActivity {
                             editor.putString("email",tokenData.getUserData().getInfodata().getEmail());
                             editor.putString("role",tokenData.getType());
                             editor.putString("base_url",base);
+                            editor.putString("mode","ageit");
                             editor.putBoolean("signedin",true);
                             editor.commit();
                             if(!tokenData.getType().equals("admin")){
@@ -105,10 +105,7 @@ public class SignInActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<TokenData> call, Throwable t) {
-
                         progressDoalog.dismiss();
-                        Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getBaseContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

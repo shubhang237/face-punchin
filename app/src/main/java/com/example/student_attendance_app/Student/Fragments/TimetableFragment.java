@@ -54,7 +54,6 @@ public class TimetableFragment extends Fragment {
             public void onResponse(Call<Timetable> call, Response<Timetable> response) {
                 try {
                     progressDoalog.dismiss();
-                    Log.d("Resp",response.body().toString());
                     generateDataList(response.body());
                 }
                 catch (Exception e){

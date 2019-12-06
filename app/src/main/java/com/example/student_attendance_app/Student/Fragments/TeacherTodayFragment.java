@@ -69,7 +69,6 @@ public class TeacherTodayFragment extends Fragment {
                 try {
 
                     progressDoalog.dismiss();
-                    // Log.d("Resp",response.body().toString());
                     DailySchedule dailySchedule = response.body();
                     generateDataList(dailySchedule);
                 }
