@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity
         String email = sPref.getString("email","");
         String role = sPref.getString("role","none");
         showUserInfo(username, email);
-        if(role.equals("student")) {
-            loadFragment(new TimetableFragment());
-        }
-        else if(role.equals("teacher")){
+        if(role.equals("teacher")){
             navigationView.getMenu().removeItem(0);
             navigationView.getMenu().removeGroup(0);
             navigationView.inflateMenu(R.menu.activity_main_teacher_drawer);
             loadFragment(new TeacherTodayFragment());
+        }
+        else {
+            loadFragment(new TimetableFragment());
         }
     }
 

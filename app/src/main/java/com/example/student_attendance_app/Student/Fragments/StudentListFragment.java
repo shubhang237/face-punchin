@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -63,7 +64,10 @@ public class StudentListFragment extends Fragment {
     private List<String> currentSelectedItems;
     private List<String> present;
     private ProgressDialog progressDoalog;
-    private List<Student> list;
+    private List<Student> studList;
+//    private Button presentCount;
+//    private Button absentCount;
+
     private Button markAttendance;
     private ImageButton photoAttendance;
     private ImageButton galleryAttendance;
@@ -74,6 +78,7 @@ public class StudentListFragment extends Fragment {
         this.isLab = isLab;
         currentSelectedItems = new ArrayList<>();
         present = new ArrayList<>();
+        studList = new ArrayList<>();
     }
 
     @Override
@@ -93,6 +98,10 @@ public class StudentListFragment extends Fragment {
         SharedPreferences sPref = getContext().getSharedPreferences("MyPref",0);
         final String token = sPref.getString("access_token","");
         final String base_url = sPref.getString("base_url","");
+//        presentCount = view.findViewById(R.id.presentCount);
+//        presentCount.setText(String.valueOf(currentSelectedItems.size()));
+//        absentCount = view.findViewById(R.id.absentCount);
+//        absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
         modeButton = view.findViewById(R.id.mode);
         modeButton.setText("PRO");
         modeButton.setTextOn("LITE");
@@ -267,6 +276,8 @@ public class StudentListFragment extends Fragment {
                         List<String> studentList = list.getRollnos();
                         currentSelectedItems.addAll(studentList);
                         present.addAll(studentList);
+//                        absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
+//                        presentCount.setText(String.valueOf(currentSelectedItems.size()));
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -305,6 +316,8 @@ public class StudentListFragment extends Fragment {
                         List<String> studentList = list.getRollnos();
                         currentSelectedItems.addAll(studentList);
                         present.addAll(studentList);
+//                        absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
+//                        presentCount.setText(String.valueOf(currentSelectedItems.size()));
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -385,17 +398,23 @@ public class StudentListFragment extends Fragment {
     }
 
     private void generateDataList(SectionList sectionList) {
-        list = sectionList.getStudents();
+        studList = sectionList.getStudents();
         recyclerView = getView().findViewById(R.id.studentListRecyclerView);
-        adapter = new SectionListAdapter(getContext(),list,present,new SectionListAdapter.OnItemCheckListener() {
+//        absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
+//        presentCount.setText(String.valueOf(currentSelectedItems.size()));
+        adapter = new SectionListAdapter(getContext(),studList,present,new SectionListAdapter.OnItemCheckListener() {
             @Override
             public void onItemCheck(Student student) {
                 currentSelectedItems.add(student.getRollno());
+//                absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
+//                presentCount.setText(String.valueOf(currentSelectedItems.size()));
             }
 
             @Override
             public void onItemUncheck(Student student) {
                 currentSelectedItems.remove(student.getRollno());
+//                absentCount.setText(String.valueOf(studList.size()-currentSelectedItems.size()));
+//                presentCount.setText(String.valueOf(currentSelectedItems.size()));
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());

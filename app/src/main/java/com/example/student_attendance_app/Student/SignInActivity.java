@@ -79,8 +79,8 @@ public class SignInActivity extends AppCompatActivity {
                 call.enqueue(new Callback<TokenData>() {
                     @Override
                     public void onResponse(Call<TokenData> call, Response<TokenData> response) {
-                        progressDoalog.dismiss();
                         try {
+                            progressDoalog.dismiss();
                             TokenData tokenData = response.body();
                             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0); // 0 - for private mode
                             SharedPreferences.Editor editor = pref.edit();
@@ -89,13 +89,10 @@ public class SignInActivity extends AppCompatActivity {
                             editor.putString("email",tokenData.getUserData().getInfodata().getEmail());
                             editor.putString("role",tokenData.getType());
                             editor.putString("base_url",base);
-                            editor.putString("mode","ageit");
                             editor.putBoolean("signedin",true);
                             editor.commit();
-                            if(!tokenData.getType().equals("admin")){
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            startActivity(intent);
                         }
                         catch (Exception e){
                             progressDoalog.dismiss();
@@ -106,6 +103,7 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<TokenData> call, Throwable t) {
                         progressDoalog.dismiss();
+                        Toast.makeText(getBaseContext(),t.getMessage(),Toast.LENGTH_SHORT);
                     }
                 });
             }
